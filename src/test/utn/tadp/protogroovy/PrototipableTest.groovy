@@ -6,6 +6,15 @@ class PrototipableTest {
 	@Before
 	void setUp() {
 		Object.mixin(Prototipable)
+		
+		Object.metaClass {
+			withParams = { closure, Object... params ->
+				final Closure clonedClosure = closure.clone();
+				clonedClosure.setResolveStrategy(Closure.DELEGATE_FIRST);
+				clonedClosure.setDelegate(delegate);
+				clonedClosure.call(*params);
+			}
+		}
 	}
 	
 	@Test
@@ -38,9 +47,9 @@ class PrototipableTest {
 		a.numero1 = 5
 		a.numero2 = 3
 		
-		a.sumar = { -> numero1 + numero2 }
+		a.sumar = { numero3, numero4 -> numero1 + numero2 + numero3 + numero4 }
 		
-		assert a.sumar() == 8
+		assert a.sumar(10, 20) == 38
 	}
 	
 }

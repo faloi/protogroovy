@@ -17,8 +17,8 @@ class Prototipable {
 		
 		if (metodo == null)
 			throw new MissingMethodException(name, Object.class, args)
-		else
-			metodo.call(*args)
+			
+		this.withParams(metodo, args)
 	}
 	
 	def agregarProperty(nombre, valor) {
@@ -28,6 +28,4 @@ class Prototipable {
 	def agregarMetodo(nombre, comportamiento) {
 		this.metodos[nombre] = comportamiento
 	}
-	
-	
 }
