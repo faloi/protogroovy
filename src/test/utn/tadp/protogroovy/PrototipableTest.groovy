@@ -38,9 +38,9 @@ class PrototipableTest {
 		a.numero1 = 5
 		a.numero2 = 3
 		
-		a.sumar = { numero3, numero4 -> numero1 + numero2 + numero3 + numero4 }
+		a.sumar = { -> numero1 + numero2 }
 		
-		assert a.sumar(1, 8) == 17
+		assert a.sumar() == 8
 	}
 	
 }
