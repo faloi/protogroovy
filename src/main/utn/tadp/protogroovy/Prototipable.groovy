@@ -4,6 +4,7 @@ package utn.tadp.protogroovy
 class Prototipable {
 
 	def metodos = [:]
+	def prototype
 	
 	def propertyMissing(String name, value) {
 		if (value instanceof Closure)
@@ -11,6 +12,13 @@ class Prototipable {
 		else
 			this.agregarProperty name, value
 	}	
+	
+	def propertyMissing(String name) {
+		if (this.prototype == null)
+			throw new MissingMethodException("get${name.capitalize()}", Object.class, null)
+		
+		this.prototype."${name}"
+	}
 
 	def methodMissing(String name, args) {
 		def metodo = this.metodos[name]

@@ -52,4 +52,26 @@ class PrototipableTest {
 		assert a.sumar(10, 20) == 38
 	}
 	
+	@Test
+	void "si el objeto no tiene una property se busca en su prototipo"() {
+		def a = new Object()
+		a.nombre = "don jose"
+		
+		def b = new Object()
+		b.prototype = a
+		
+		assert b.nombre == "don jose"
+	}
+	
+	@Test(expected=MissingMethodException.class)
+	void "si el objeto no tiene la property arroja MissingMethodException"() {
+		def a = new Object()
+		a.nombre = "don jose"
+		
+		def b = new Object()
+		b.prototype = a
+		
+		assert b.edad == 21
+	}
+	
 }
