@@ -14,8 +14,7 @@ class Prototipable {
 	}	
 	
 	def propertyMissing(String name) {
-		this.validarPrototipo "get${name.capitalize()}", null
-		this.prototype."${name}"
+		this.ejecutarEnPrototipo "get${name.capitalize()}", null, { proto -> proto."${name}" }
 	}
 
 	def methodMissing(String name, args) {
@@ -26,14 +25,9 @@ class Prototipable {
 		def metodo = this.metodos[mensaje]
 		
 		if (metodo == null)
-			this.ejecutarEnPrototipo mensaje, argumentos
+			this.ejecutarEnPrototipo mensaje, argumentos, { proto -> proto.ejecutar(this, mensaje, argumentos) }
 		else
 			contexto.withParams(metodo, argumentos)
-	}
-	
-	def ejecutarEnPrototipo(mensaje, argumentos) {
-		this.validarPrototipo mensaje, argumentos
-		this.prototype.ejecutar this, mensaje, argumentos
 	}
 	
 	def agregarProperty(nombre, valor) {
@@ -44,8 +38,10 @@ class Prototipable {
 		this.metodos[nombre] = comportamiento
 	}
 	
-	def validarPrototipo(mensajeSolicitado, argumentos) {
+	def ejecutarEnPrototipo(mensajeSolicitado, argumentos, bloque) {
 		if (this.prototype == null)
 			throw new MissingMethodException(mensajeSolicitado, Object.class, argumentos)
+			
+		bloque this.prototype
 	}
 }
