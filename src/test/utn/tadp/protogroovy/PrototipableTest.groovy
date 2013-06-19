@@ -100,4 +100,29 @@ class PrototipableTest {
 		
 		assert b.despedir() == "chau amigo!"
 	}
+	
+	@Test
+	void "el test del parcial"() {
+		def a = new Object()
+		a.operador1 = 1
+		a.operador2 = 4
+		a.suma = { operador3 , operador4->
+			operador4 + operador3 + operador1 + operador2
+		}
+		assert a.suma(3, 0) == 8
+		
+		def b = new Object()
+		b.prototype = a
+		assert b.operador1 == 1
+		assert b.suma(3, 2) == 10
+		
+		b.operador2 = 10
+		assert b.suma(3, 4) == 18
+		
+		b.otraSuma = {operador -> operador1 + operador}
+		assert b.otraSuma(5) == 6
+		
+		b.sumaFinal = {operador1 + operador2}
+		assert b.sumaFinal() == 11
+	}
 }
